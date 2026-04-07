@@ -79,12 +79,22 @@ These users are seeded automatically on startup:
 ### Prerequisites
 
 - Java 17
-- PostgreSQL running locally
-- Database `customerdb`
 
 ### Runtime Database
 
-The main runtime configuration uses PostgreSQL from `src/main/resources/application.properties`:
+The app starts with H2 by default for a zero-setup local run.
+
+If you want PostgreSQL, use `src/main/resources/application-postgres.properties` with the `postgres` profile.
+
+Default local config in `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:h2:mem:customerdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.username=sa
+spring.datasource.password=
+```
+
+PostgreSQL profile config in `src/main/resources/application-postgres.properties`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/customerdb
@@ -98,18 +108,27 @@ spring.datasource.password=secret
 .\mvnw.cmd spring-boot:run
 ```
 
+### Start With PostgreSQL
+
+```powershell
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=postgres"
+```
+
 ### Run Tests
 
 Tests use an in-memory H2 database through `src/test/resources/application.properties`, so builds do not require PostgreSQL:
 
 ```powershell
-.\mvnw.cmd "-Dmaven.repo.local=.m2" test
+.\mvnw.cmd test
 ```
+
+GitHub Actions runs the same Maven test phase on Ubuntu with Java 17, so this command is the simplest local pre-push validation.
 
 ## Swagger And Operations
 
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI docs: `http://localhost:8080/v3/api-docs`
+- H2 console: `http://localhost:8080/h2-console`
 - Health endpoint: `http://localhost:8080/actuator/health`
 - Info endpoint: `http://localhost:8080/actuator/info`
 
