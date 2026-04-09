@@ -101,6 +101,13 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/customerdb
 spring.datasource.username=postgres
 spring.datasource.password=secret
 ```
+## Local Validation Before Push
+
+Before pushing changes, run the following command locally:
+
+```powershell
+.\mvnw.cmd test
+```
 
 ### Start Locally
 
@@ -137,6 +144,19 @@ For secured endpoints:
 2. Copy the returned `accessToken`
 3. Use `Authorization: Bearer <token>`
 4. In Swagger UI, click `Authorize` and paste the token
+
+### Using JWT In Swagger
+
+If you want to test secured APIs in Swagger UI, follow these simple steps:
+
+1. Start the application and open [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+2. Run `POST /api/auth/login` with one of the demo email/password pairs listed above.
+3. Copy the `accessToken` value from the response.
+4. Click the `Authorize` button in Swagger UI.
+5. Paste `Bearer <your-access-token>` into the authorization field and confirm.
+6. Call any secured endpoint normally from Swagger UI.
+
+If a request returns `401 Unauthorized`, log in again and make sure the token is pasted with the `Bearer ` prefix.
 
 ## Notes On Authentication
 
