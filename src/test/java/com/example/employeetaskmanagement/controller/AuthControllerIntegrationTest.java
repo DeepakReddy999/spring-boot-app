@@ -39,6 +39,24 @@ class AuthControllerIntegrationTest {
     }
 
     @Test
+    void login_returnsAccessTokenForSeededEmployeeUser() throws Exception {
+        mockMvc.perform(
+            post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "email": "employee@company.com",
+                      "password": "Employee@123"
+                    }
+                    """)
+        )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.accessToken").isNotEmpty())
+            .andExpect(jsonPath("$.tokenType").value("Bearer"))
+            .andExpect(jsonPath("$.username").value("employee@company.com"));
+    }
+
+    @Test
     void login_acceptsMixedCaseAndWhitespaceInEmail() throws Exception {
         mockMvc.perform(
             post("/api/auth/login")
