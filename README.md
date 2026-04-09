@@ -101,6 +101,12 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/customerdb
 spring.datasource.username=postgres
 spring.datasource.password=secret
 ```
+## Local Validation Before Push
+
+Before pushing changes, run the following command locally:
+
+```powershell
+.\mvnw.cmd test
 
 ### Start Locally
 
